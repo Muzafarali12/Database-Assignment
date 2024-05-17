@@ -1,0 +1,89 @@
+CREATE DATABASE HOTEL;
+USE HOTEL;
+
+CREATE TABLE CUSTOMERS (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(20),
+    Address VARCHAR(50),
+    Phone_Number VARCHAR(15)
+);
+
+CREATE TABLE PRODUCTS (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(20),
+    Description TEXT,
+    Price FLOAT,
+    Quantity_Available INT,
+    Seller_ID INT,
+    FOREIGN KEY (Seller_ID) REFERENCES SELLERS(ID)
+);
+
+CREATE TABLE SELLERS (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(20),
+    Email VARCHAR(30),
+    Address VARCHAR(50),
+    Phone_Number VARCHAR(15)
+);
+
+CREATE TABLE ORDERS (
+    ID INT PRIMARY KEY,
+    Customer_ID INT,
+    Order_Date DATE,
+    Status VARCHAR(20),
+    FOREIGN KEY (Customer_ID) REFERENCES CUSTOMERS(ID)
+);
+
+CREATE TABLE ORDER_ITEMS (
+    ID INT PRIMARY KEY,
+    Order_ID INT,
+    Product_ID INT,
+    Quantity INT,
+    Price_Per_Item FLOAT,
+    FOREIGN KEY (Order_ID) REFERENCES ORDERS(ID),
+    FOREIGN KEY (Product_ID) REFERENCES PRODUCTS(ID)
+);
+
+CREATE TABLE PAYMENT_METHODS (
+    ID INT PRIMARY KEY,
+    Customer_ID INT,
+    Method_Type VARCHAR(20),
+    Card_Number VARCHAR(16),
+    Expiry_Date DATE,
+    FOREIGN KEY (Customer_ID) REFERENCES CUSTOMERS(ID)
+);
+
+CREATE TABLE SHIPPING_ADDRESSES (
+    ID INT PRIMARY KEY,
+    Customer_ID INT,
+    Address VARCHAR(50),
+    City VARCHAR(50),
+    Postal_Code VARCHAR(10),
+    Country VARCHAR(50),
+    FOREIGN KEY (Customer_ID) REFERENCES CUSTOMERS(ID)
+);
+
+CREATE TABLE REVIEWS (
+    ID INT PRIMARY KEY,
+    Product_ID INT,
+    Customer_ID INT,
+    Rating INT,
+    Comment TEXT,
+    Review_Date DATE,
+    FOREIGN KEY (Product_ID) REFERENCES PRODUCTS(ID),
+    FOREIGN KEY (Customer_ID) REFERENCES CUSTOMERS(ID)
+);
+
+CREATE TABLE CATEGORIES (
+    ID INT PRIMARY KEY,
+    Category_Name VARCHAR(50),
+    Description TEXT
+);
+
+CREATE TABLE PRODUCT_CATEGORIES_MAPPING (
+    ID INT PRIMARY KEY,
+    Product_ID INT,
+    Category_ID INT,
+    FOREIGN KEY (Product_ID) REFERENCES PRODUCTS(ID),
+    FOREIGN KEY (Category_ID) REFERENCES CATEGORIES(ID)
+);
